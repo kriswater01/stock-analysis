@@ -23,11 +23,11 @@
     --fs-xs:13px;       /* 标签/脚注 */
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
+  html{scroll-behavior:smooth;max-width:100%;overflow-x:clip}
   body{
     background:var(--bg); color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif;
-    line-height:1.65; -webkit-font-smoothing:antialiased; font-size:var(--fs-base);
+    line-height:1.65; -webkit-font-smoothing:antialiased; font-size:var(--fs-base);max-width:100%;overflow-x:clip;
     background-image:radial-gradient(900px 500px at 85% -5%, rgba(23,78,166,.05), transparent 60%),
                      radial-gradient(700px 400px at 0% 100%, rgba(155,108,22,.04), transparent 55%);
   }
@@ -199,6 +199,7 @@
   .reco .slabel{font-size:11px;color:var(--mut2);margin-top:6px;text-align:center}
 
   /* discipline */
+  .discipline-section{margin-top:30px}
   .disc{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
   .d1{background:#fff;border:1px solid var(--line);border-left:4px solid var(--amber);border-radius:11px;padding:18px 20px}
   .d1 .t{font-size:var(--fs-h3);font-weight:800;color:var(--amber);margin-bottom:7px}
@@ -273,7 +274,6 @@
   .reco-point{background:rgba(255,255,255,.72);border:1px solid #c9ddf4;border-radius:10px;padding:11px 13px;line-height:1.55}
   .reco-point b{display:block;color:var(--ink);font-size:var(--fs-sm);margin-bottom:2px}
   .reco-point span{display:block;color:var(--mut);font-size:var(--fs-xs)}
-  .compcards{display:none}
 
   @media (max-width:900px){
     .crow{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -334,20 +334,7 @@
     .cstat .cv{font-size:17px;line-height:1.3;word-break:break-word}
 
     .swipehint{display:none}
-    .tbl{display:none}
-    .compcards{display:grid;grid-template-columns:1fr;gap:10px}
-    .compcard{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:14px;box-shadow:0 1px 2px rgba(12,20,34,.06),0 4px 12px rgba(12,20,34,.06)}
-    .compcard.you{background:var(--hl);border-color:#b8d0ef}
-    .cc-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px}
-    .cc-name{font-weight:800;font-size:16px;line-height:1.3;color:var(--ink)}
-    .cc-name small{display:block;font-weight:400;color:var(--mut2);font-size:11px;margin-top:1px}
-    .cc-pos{font-size:12px;color:var(--mut);text-align:right;line-height:1.35;max-width:48%}
-    .cc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-    .cc-item{background:rgba(255,255,255,.62);border:1px solid rgba(205,215,229,.9);border-radius:8px;padding:8px 9px;min-width:0}
-    .cc-item.wide{grid-column:1/3}
-    .cc-label{font-size:11px;color:var(--mut2);margin-bottom:2px}
-    .cc-val{font-size:13px;color:var(--ink);font-weight:650;line-height:1.45;word-break:break-word}
-    .cc-val .pill{margin-top:4px}
+    .tbl{font-size:var(--fs-xs)}
 
     .vline{grid-template-columns:82px 1fr;gap:8px 10px}
     .vbar{height:28px}
@@ -375,8 +362,6 @@
   @media (max-width:380px){
     .asof{grid-template-columns:1fr}
     .crow{grid-template-columns:1fr !important}
-    .cc-grid{grid-template-columns:1fr}
-    .cc-item.wide{grid-column:auto}
     h1 .tick{display:block;margin-left:0;margin-top:2px}
   }
 
@@ -390,7 +375,7 @@
     --red:#b83b36; --green:#167a4a; --amber:#9a6b16;
     --hl:#eef5ff;
   }
-  body{background:var(--bg);background-image:linear-gradient(180deg,#f7f9fc 0%,#eef2f7 100%);}
+  body{background:var(--bg);background-image:linear-gradient(180deg,#f7f9fc 0%,#eef2f6 100%);}
   .wrap{max-width:1120px}
   header{border-bottom:1px solid #d9e1ec}
   .eyebrow{color:#182235;font-weight:850;letter-spacing:.13em}
@@ -404,7 +389,7 @@
   .verdict,.reco,.chartbox,.val,.watch,.srcbox,.takeaway-panel,
   .kpi,.seg,.card,.lane,.ec,.olc,.d1,.cstat,.tension{
     border-color:var(--line)!important;
-    box-shadow:0 8px 24px rgba(15,23,42,.045)!important;
+    box-shadow:0 1px 2px rgba(15,23,42,.04),0 10px 22px rgba(15,23,42,.035)!important;
   }
   .verdict,.reco{border-radius:12px!important;background:#fffef9!important}
   .verdict{border-left:4px solid var(--gold)!important}
@@ -422,7 +407,7 @@
   .seg::before{width:4px}
   .seg .tag,.lane .who,.olc .h,.d1 .t{font-size:var(--fs-sm);font-weight:900;letter-spacing:.04em}
   .seg h3,.card h3,.lane .pick{font-weight:900}
-  .tension{font-size:var(--fs-lg);line-height:1.72;padding:18px 21px;background:#ffffff;border-left:4px solid var(--gold);border-radius:11px!important}
+  .tension{font-size:var(--fs-lg);line-height:1.72;padding:20px 22px;background:linear-gradient(180deg,#fffdf7,#ffffff);border-left:4px solid var(--gold);border-radius:11px!important}
   .tension b{font-weight:900;color:var(--gold)}
 
   .chartbox{background:#ffffff;overflow:hidden}
@@ -459,7 +444,7 @@
     .sub{font-size:15.5px;line-height:1.55;color:#4a5568}
     .asof{display:flex!important;flex-direction:column;gap:7px;margin-top:18px;padding-top:15px;border-top:1px solid #d9e1ec;color:#4b5568}
     .asof span{display:flex;align-items:baseline;gap:10px;background:transparent!important;border:none!important;border-radius:0!important;padding:0!important;text-align:left;font-size:13.5px;line-height:1.45;white-space:normal}
-    .asof b{display:inline!important;flex:0 0 58px;margin:0!important;font-size:13.5px;color:#111827;font-weight:900}
+    .asof b{display:inline!important;flex:0 0 64px;margin:0!important;font-size:13.5px;color:#111827;font-weight:900}
 
     .verdict,.reco{margin:22px 0;padding:18px 18px;border-radius:11px!important}
     .verdict .lab,.reco .lab{font-size:16.5px!important;letter-spacing:.01em;margin-bottom:8px;color:inherit;font-weight:950}
@@ -508,9 +493,55 @@
     .takeaway-title{font-size:17.5px!important;line-height:1.38;margin-bottom:6px}
     .takeaway-text{font-size:14.2px!important;line-height:1.72;color:#4b5568}
 
-    .compcard{border-radius:10px!important;box-shadow:0 8px 22px rgba(15,23,42,.045)!important}
     .srcbox,.watch,.val{border-radius:11px!important}
     footer{line-height:1.65}
+  }
+
+  @media (max-width:430px){
+    .wrap{padding:0 15px}
+    .chartbox{padding-left:11px!important;padding-right:11px!important}
+    .chart-svg{width:680px!important}
+    .crow{gap:9px!important}
+    .cstat{padding:10px 9px!important}
+  }
+
+  @media (max-width:390px){
+    .wrap{padding:0 14px}
+    h1{font-size:30px}
+    .asof span{gap:8px;font-size:13px}
+    .asof b{flex-basis:62px;font-size:13px}
+    .crow{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+    .cstat .cl{font-size:11px!important}
+    .cstat .cv{font-size:17px!important}
+  }
+
+  @media (max-width:375px){
+    .wrap{padding:0 13px}
+    .snum{min-width:39px}
+    .shead h2{font-size:18px}
+    .takeaway-item{grid-template-columns:40px 1fr;gap:0 9px}
+    .chart-svg{width:660px!important}
+  }
+
+  @media (max-width:360px){
+    .crow{grid-template-columns:1fr!important}
+    .chartbox{padding-left:10px!important;padding-right:10px!important}
+    .cstat{padding:10px 11px!important}
+  }
+
+  .table-scroll{width:100%;max-width:100%;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;border-radius:12px}
+  .table-scroll .tbl{min-width:900px;display:table!important;white-space:normal}
+
+  @media (max-width:900px){
+    .table-scroll{border:1px solid var(--line);background:#fff;box-shadow:0 1px 2px rgba(15,23,42,.04),0 10px 22px rgba(15,23,42,.035)}
+    .table-scroll .tbl{border:none;border-radius:0;box-shadow:none!important}
+  }
+
+  @media (max-width:560px){
+    .table-scroll{border-radius:11px}
+    .table-scroll .tbl{font-size:12px;min-width:860px}
+    .table-scroll .tbl thead th{padding:11px 12px}
+    .table-scroll .tbl td{padding:12px}
   }
 
 </style>
@@ -523,10 +554,10 @@
     <h1>Soitec<span class="tick">SOI.PA</span></h1>
     <div class="sub">硅基绝缘体(SOI)基板全球龙头 · 困境反转 + AI 光子学第二曲线</div>
     <div class="asof">
-      <span><b>分析师</b> 赵凯</span>
-      <span><b>整理日期</b> 2026年6月</span>
+      <span><b>日期</b> 2026年6月</span>
       <span><b>性质</b> 内部研究参考</span>
       <span><b>数据口径</b> 各公司最新可比财报与公开市场信息</span>
+      <span><b>研究负责</b> 赵凯</span>
     </div>
   </header>
 
@@ -634,9 +665,9 @@
     <div class="chartbox">
       <div class="chart-scroll"><svg class="chart-svg" viewBox="0 0 1000 320" preserveAspectRatio="xMidYMid meet" id="pxchart"></svg></div>
       <div class="clegend">
-        <div class="it"><span class="mk" style="background:#1565d8"></span>月度收盘价（示意）</div>
-        <div class="it"><span class="mk" style="background:#a9760f"></span>关键事件节点</div>
-        <div class="it"><span class="mk" style="background:#16904c"></span>当前价</div>
+        <div class="it"><span class="mk" style="background:#174b8f"></span>月度收盘价（示意）</div>
+        <div class="it"><span class="mk" style="background:#9a6b16"></span>关键事件节点</div>
+        <div class="it"><span class="mk" style="background:#167a4a"></span>当前价</div>
       </div>
       <div class="crow">
         <div class="cstat"><div class="cl">历史高点 (2021/11)</div><div class="cv">约 €273</div></div>
@@ -676,18 +707,19 @@
     <div class="shead"><span class="snum">08</span><h2>同赛道横向对比</h2>
       <span class="note">同属 AI 光互联链，但站位不同 · 高亮行为你的标的</span></div>
     <div class="swipehint">← 左右滑动查看完整表格 →</div>
-    <table class="tbl">
-      <thead><tr>
-        <th>公司</th><th>产业链位置</th><th>最新营收</th><th>盈利状况</th><th>市值</th><th>今年股价</th><th>AI暴露 / 关键绑定</th>
-      </tr></thead>
-      <tbody id="comp"></tbody>
-    </table>
-    <div class="compcards" id="compCards"></div>
+    <div class="table-scroll" aria-label="同赛道横向对比表格，可横向滚动">
+      <table class="tbl">
+        <thead><tr>
+          <th>公司</th><th>产业链位置</th><th>最新营收</th><th>盈利状况</th><th>市值</th><th>今年股价</th><th>AI暴露 / 关键绑定</th>
+        </tr></thead>
+        <tbody id="comp"></tbody>
+      </table>
+    </div>
   </section>
 
   <!-- takeaways -->
   <section>
-    <div class="shead"><span class="snum">09</span><h2>这张表的五个要点</h2></div>
+    <div class="shead"><span class="snum">09</span><h2>同赛道横向对比总结</h2></div>
     <div class="takeaway-panel" id="takeawayList"></div>
   </section>
 
@@ -716,7 +748,7 @@
 
   <!-- watchlist -->
   <section>
-    <div class="shead"><span class="snum">11</span><h2>观察清单 · 后续从哪看、看什么</h2>
+    <div class="shead monitor-head"><h2>观察清单 · 后续从哪看、看什么</h2>
       <span class="note">点状态可切换 健康 / 恶化</span></div>
     <div class="watch" id="watch"></div>
     <div class="wlhint">规则：全部健康 → 故事成立；任何一条恶化（尤其光子学增速放缓、毛利率不修复、AI 资本开支见顶）→ 减仓信号。状态仅本地切换，刷新不保存。</div>
@@ -732,8 +764,8 @@
   </section>
 
   <!-- discipline (moved to bottom) -->
-  <section style="margin-top:30px">
-    <div class="shead"><span class="snum">12</span><h2>操盘纪律</h2><span class="note">高波动股真正的胜负手</span></div>
+  <section class="discipline-section">
+    <div class="shead"><span class="snum">11</span><h2>操盘纪律</h2><span class="note">高波动股真正的胜负手</span></div>
     <div class="disc">
       <div class="d1"><div class="t">仓位</div><p>仅用组合中能承受大幅回撤、短期不需动用的一小部分（单一高波动个股通常建议 ≤ 3%–5%）。不重仓、不加杠杆、不用买房/养老的钱。</p></div>
       <div class="d1"><div class="t">建仓方式</div><p>分批建仓而非一次性追高——它日内常上下十几个百分点。</p></div>
@@ -816,24 +848,6 @@ document.getElementById('comp').innerHTML = DATA.comp.map(r=>{
     <td>${r.ai}</td>
   </tr>`;}).join('');
 
-// mobile comparison cards: 手机端不再依赖横向滑动表格，直接卡片化阅读
-const compCards = document.getElementById('compCards');
-if (compCards) {
-  compCards.innerHTML = DATA.comp.map(r=>{
-    const pill=p=>p?`<span class="pill ${p.c}">${p.t}</span>`:'';
-    return `<div class="compcard ${r.you?'you':''}">
-      <div class="cc-head"><div class="cc-name">${r.co}<small>${r.sub}</small></div><div class="cc-pos">${r.pos}</div></div>
-      <div class="cc-grid">
-        <div class="cc-item"><div class="cc-label">最新营收</div><div class="cc-val">${r.rev}<br>${pill(r.revp)}</div></div>
-        <div class="cc-item"><div class="cc-label">盈利状况</div><div class="cc-val">${r.prof}<br>${pill(r.profp)}</div></div>
-        <div class="cc-item"><div class="cc-label">市值</div><div class="cc-val mono">${r.cap}</div></div>
-        <div class="cc-item"><div class="cc-label">今年股价</div><div class="cc-val">${pill(r.px)}</div></div>
-        <div class="cc-item wide"><div class="cc-label">AI暴露 / 关键绑定</div><div class="cc-val">${r.ai}</div></div>
-      </div>
-    </div>`;
-  }).join('');
-}
-
 // takeaways: 5个观点合并为一个总卡片
 const takeawayList = document.getElementById('takeawayList');
 if (takeawayList) {
@@ -874,10 +888,10 @@ if (takeawayList) {
   let dline=pts.map((p,i)=>`${i?'L':'M'}${x(i).toFixed(1)},${y(p.v).toFixed(1)}`).join(' ');
   let darea=dline+` L${x(pts.length-1).toFixed(1)},${y(0)} L${x(0).toFixed(1)},${y(0)} Z`;
   g+=`<defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#1565d8" stop-opacity=".16"/>
-      <stop offset="100%" stop-color="#1565d8" stop-opacity="0"/></linearGradient></defs>`;
+      <stop offset="0%" stop-color="#174b8f" stop-opacity=".14"/>
+      <stop offset="100%" stop-color="#174b8f" stop-opacity="0"/></linearGradient></defs>`;
   g+=`<path d="${darea}" fill="url(#ag)"/>`;
-  g+=`<path d="${dline}" fill="none" stroke="#1565d8" stroke-width="2.6" stroke-linejoin="round"/>`;
+  g+=`<path d="${dline}" fill="none" stroke="#174b8f" stroke-width="2.6" stroke-linejoin="round"/>`;
   // x labels
   pts.forEach((p,i)=>{ if(i%2===0||i===pts.length-1)
     g+=`<text x="${x(i)}" y="${H-16}" fill="#5b6b82" font-size="11" text-anchor="middle">${p.t}</text>`;});
@@ -886,7 +900,7 @@ if (takeawayList) {
     if(!p.ev)return;
     const cur=p.ev==="当前";
     const last=(i===pts.length-1);
-    const col=cur?"#16904c":(p.v<40?"#1565d8":"#a9760f");
+    const col=cur?"#167a4a":(p.v<40?"#174b8f":"#9a6b16");
     g+=`<circle cx="${x(i)}" cy="${y(p.v)}" r="${cur?6:4.5}" fill="${col}" stroke="#ffffff" stroke-width="2"/>`;
     // 最后一个点：标签放在圆点左侧上方，避免溢出右边界
     let tx=x(i), ty, anchor;
