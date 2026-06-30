@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soitec · AI 光互联赛道投资看板</title>
+<style>
+  :root{
+    --bg:#f5f7fb; --panel:#ffffff; --panel2:#eef2f8; --line:#d3dce8;
+    --ink:#0e1726; --mut:#3f4d63; --dim:#5f7390;
+    --mut2:#64748b;
+    --gold:#b07d1a; --blue:#1f6fd6; --teal:#0f9488;
+    --red:#c8362f; --green:#1f9d57; --amber:#b5841a;
+    --hl:#eaf2fd;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif;
+    line-height:1.6; -webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(900px 500px at 85% -5%, rgba(31,111,214,.06), transparent 60%),
+                     radial-gradient(700px 400px at 0% 100%, rgba(176,125,26,.05), transparent 55%);
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+  .mono{font-family:"SF Mono",ui-monospace,"Cascadia Code",Consolas,monospace;font-variant-numeric:tabular-nums}
+
+  /* header */
+  header{padding:40px 0 26px;border-bottom:1px solid var(--line)}
+  .eyebrow{font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--mut2);font-weight:600}
+  h1{font-size:34px;font-weight:700;letter-spacing:-.5px;margin:10px 0 4px}
+  h1 .tick{color:var(--gold);font-weight:600;font-size:22px;letter-spacing:0;margin-left:8px}
+  .sub{color:var(--mut);font-size:15px}
+  .asof{margin-top:14px;display:flex;gap:18px;flex-wrap:wrap;font-size:12.5px;color:var(--mut2)}
+  .asof b{color:var(--mut);font-weight:600}
+
+  /* verdict band */
+  .verdict{margin:26px 0;background:#fffdf6;
+    border:1px solid #e8d9b0;border-left:4px solid var(--gold);border-radius:12px;padding:22px 26px;
+    box-shadow:0 2px 10px rgba(20,40,80,.05)}
+  .verdict .lab{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .verdict p{margin-top:9px;font-size:16px;color:var(--ink);font-weight:500}
+  .verdict .warn{color:var(--red);font-weight:700}
+
+  section{margin:38px 0}
+  .shead{display:flex;align-items:baseline;gap:14px;margin-bottom:16px}
+  .snum{font-size:12px;color:var(--mut2);font-weight:700;letter-spacing:.1em}
+  .shead h2{font-size:20px;font-weight:700;letter-spacing:-.2px}
+  .shead .note{margin-left:auto;font-size:12.5px;color:var(--mut2)}
+
+  /* KPI row */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:16px 18px}
+  .kpi .k{font-size:12px;color:var(--mut);letter-spacing:.04em}
+  .kpi .v{font-size:25px;font-weight:700;margin-top:6px;letter-spacing:-.5px}
+  .kpi .d{font-size:12px;margin-top:3px;color:var(--mut2)}
+  .up{color:var(--green)} .down{color:var(--red)} .neu{color:var(--blue)}
+
+  /* table */
+  .tbl{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--line);
+    border-radius:12px;overflow:hidden;font-size:13.5px}
+  .tbl thead th{background:var(--panel2);color:var(--ink);font-weight:600;text-align:left;
+    padding:13px 14px;letter-spacing:.03em;font-size:12px;border-bottom:1px solid var(--line);white-space:nowrap}
+  .tbl td{padding:13px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  .tbl tbody tr:last-child td{border-bottom:none}
+  .tbl tbody tr:nth-child(even) td{background:#f8fafc}
+  .tbl .you td{background:var(--hl)!important}
+  .tbl .you .co{color:var(--gold)}
+  .co{font-weight:700}
+  .co small{display:block;font-weight:400;color:var(--mut2);font-size:11px;margin-top:1px}
+  .pill{display:inline-block;padding:1px 8px;border-radius:20px;font-size:11px;font-weight:600;margin-top:2px}
+  .pill.r{background:rgba(224,108,108,.14);color:var(--red)}
+  .pill.g{background:rgba(108,194,138,.14);color:var(--green)}
+
+  /* takeaways */
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:16px 18px;position:relative}
+  .card .ci{font-size:12px;color:var(--gold);font-weight:700;letter-spacing:.05em}
+  .card h3{font-size:14.5px;margin:6px 0 4px;font-weight:700}
+  .card p{font-size:13px;color:var(--mut)}
+  .card.span2{grid-column:1/3}
+
+  /* decision lanes */
+  .lanes{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .lane{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--blue);
+    border-radius:11px;padding:18px}
+  .lane.a{border-top-color:var(--teal)} .lane.b{border-top-color:var(--red)} .lane.c{border-top-color:var(--gold)}
+  .lane .who{font-size:13px;font-weight:700;margin-bottom:6px}
+  .lane .pick{font-size:15px;font-weight:700;margin-bottom:8px;color:var(--ink)}
+  .lane p{font-size:12.5px;color:var(--mut)}
+
+  /* watchlist */
+  .watch{display:flex;flex-direction:column;gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .wrow{display:grid;grid-template-columns:210px 1fr 96px;gap:0;align-items:stretch;
+    border-bottom:1px solid var(--line);transition:background .15s}
+  .wrow:last-child{border-bottom:none}
+  .wrow:hover{background:#f8fafc}
+  .wrow .m{padding:14px 16px;font-weight:600;font-size:13.5px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:4px;justify-content:center}
+  .wrow .m .ws{font-weight:400;font-size:11px;color:var(--mut2)}
+  .wrow .s{padding:13px 16px;font-size:12.5px;color:var(--mut);display:flex;flex-direction:column;gap:5px;justify-content:center}
+  .wrow .s .look{color:var(--ink)}
+  .wrow .s .where{font-size:11.5px;color:var(--mut2)}
+  .wrow .s .where b{color:var(--blue);font-weight:600}
+  .wrow .st{padding:14px 12px;text-align:center;border-left:1px solid var(--line);display:flex;align-items:center;justify-content:center}
+  .dot{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;cursor:pointer;user-select:none}
+  .dot i{width:9px;height:9px;border-radius:50%;background:var(--mut2);display:inline-block;transition:.2s}
+  .dot.ok i{background:var(--green)} .dot.ok{color:var(--green)}
+  .dot.bad i{background:var(--red)} .dot.bad{color:var(--red)}
+  .wlhint{font-size:11.5px;color:var(--mut2);margin-top:8px}
+  .srcbox{margin-top:18px;background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:18px 20px}
+  .srctitle{font-size:12.5px;font-weight:700;color:var(--blue);letter-spacing:.04em;margin-bottom:12px}
+  .srcgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .src{font-size:12.3px;color:var(--mut);line-height:1.5}
+  .src b{color:var(--ink);font-weight:700;display:block;margin-bottom:2px;font-size:12.5px}
+
+  /* business segments */
+  .segs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .seg{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:18px;position:relative;overflow:hidden}
+  .seg::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px}
+  .seg.old::before{background:var(--red)} .seg.mid::before{background:var(--amber)} .seg.eng::before{background:var(--green)}
+  .seg .tag{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:700}
+  .seg.old .tag{color:var(--red)} .seg.mid .tag{color:var(--amber)} .seg.eng .tag{color:var(--green)}
+  .seg h3{font-size:15px;margin:7px 0 3px;font-weight:700}
+  .seg .role{font-size:11.5px;color:var(--mut2);margin-bottom:7px}
+  .seg p{font-size:12.8px;color:var(--mut)}
+  .tension{margin-top:14px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;
+    padding:14px 18px;font-size:13.5px;color:var(--ink)}
+  .tension b{color:var(--gold)}
+
+  /* earnings read */
+  .ern{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+  .ec{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:15px 18px;display:flex;gap:13px;align-items:flex-start}
+  .ec .ico{font-size:18px;line-height:1;margin-top:2px;width:26px;height:26px;border-radius:7px;
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:800;font-size:14px}
+  .ec.pos .ico{background:rgba(108,194,138,.16);color:var(--green)}
+  .ec.neg .ico{background:rgba(224,108,108,.16);color:var(--red)}
+  .ec h4{font-size:13.5px;font-weight:700;margin-bottom:2px}
+  .ec p{font-size:12.5px;color:var(--mut)}
+
+  /* outlook two-col */
+  .ol{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .olc{border:1px solid var(--line);border-radius:11px;padding:18px;background:var(--panel)}
+  .olc .h{font-size:13px;font-weight:700;letter-spacing:.04em;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .olc.up .h{color:var(--green)} .olc.dn .h{color:var(--red)}
+  .olc ul{list-style:none}
+  .olc li{font-size:12.8px;color:var(--mut);padding:6px 0 6px 16px;position:relative;border-bottom:1px solid var(--line)}
+  .olc li:last-child{border-bottom:none}
+  .olc li::before{content:"";position:absolute;left:0;top:13px;width:5px;height:5px;border-radius:50%}
+  .olc.up li::before{background:var(--green)} .olc.dn li::before{background:var(--red)}
+
+  /* price chart */
+  .chartbox{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px 24px 16px}
+  .chart-svg{width:100%;height:auto;display:block;overflow:visible}
+  .clegend{display:flex;gap:22px;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--mut)}
+  .clegend .it{display:flex;align-items:center;gap:7px}
+  .clegend .mk{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .crow{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
+  .cstat{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:11px 14px}
+  .cstat .cl{font-size:11px;color:var(--mut2)}
+  .cstat .cv{font-size:16px;font-weight:700;margin-top:3px;letter-spacing:-.3px}
+
+  /* valuation ladder */
+  .val{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px 24px}
+  .vline{display:grid;grid-template-columns:150px 1fr;gap:18px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}
+  .vline:last-child{border-bottom:none}
+  .vline .lab{font-size:12.5px;color:var(--mut);font-weight:600}
+  .vbar{position:relative;height:30px;background:var(--panel2);border-radius:6px;overflow:hidden}
+  .vbar .fill{position:absolute;left:0;top:0;bottom:0;border-radius:6px;display:flex;align-items:center;padding:0 12px;
+    font-size:12px;font-weight:700;color:#0b1220;white-space:nowrap}
+  .vnote{margin-top:16px;font-size:13px;color:#dde6f3;padding:14px 18px;background:rgba(224,108,108,.08);
+    border:1px solid rgba(224,108,108,.25);border-radius:10px}
+  .vnote b{color:var(--red)}
+
+  /* final recommendation */
+  .reco{margin:18px 0 0;background:linear-gradient(180deg,#fbfdff,#eef6ff);
+    border:1px solid #bcd6f2;border-left:4px solid var(--blue);border-radius:12px;padding:22px 26px;
+    box-shadow:0 2px 12px rgba(31,111,214,.08)}
+  .reco .lab{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--blue);font-weight:700}
+  .reco .stance{display:flex;align-items:center;gap:14px;margin:12px 0 8px;flex-wrap:wrap}
+  .reco .badge{font-size:15px;font-weight:800;color:#fff;background:var(--blue);padding:6px 16px;border-radius:8px;letter-spacing:.02em}
+  .reco .stance .one{font-size:15px;font-weight:700;color:var(--ink)}
+  .reco p{font-size:14px;color:var(--mut);margin-top:6px;line-height:1.65}
+  .reco p b{color:var(--ink)}
+  .reco .scale{display:flex;margin:14px 0 2px;border-radius:8px;overflow:hidden;border:1px solid var(--line)}
+  .reco .seg5{flex:1;text-align:center;padding:8px 4px;font-size:11.5px;font-weight:600;color:var(--mut2);background:var(--panel)}
+  .reco .seg5.on.b{background:var(--blue);color:#fff}
+  .reco .slabel{font-size:11px;color:var(--mut2);margin-top:6px;text-align:center}
+
+  /* discipline */
+  .disc{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .d1{background:#fff;border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:11px;padding:16px 18px}
+  .d1 .t{font-size:13px;font-weight:700;color:var(--amber);margin-bottom:5px}
+  .d1 p{font-size:12.5px;color:var(--mut)}
+
+  footer{margin:48px 0 36px;padding-top:18px;border-top:1px solid var(--line);
+    font-size:11.5px;color:var(--mut2);font-style:italic}
+
+  @media (max-width:900px){
+    .kpis,.lanes,.disc{grid-template-columns:1fr 1fr}
+    .cards{grid-template-columns:1fr}.card.span2{grid-column:auto}
+    .wrap{padding:0 18px}
+    .tbl{font-size:12px;display:block;overflow-x:auto;white-space:nowrap}
+    .wrow{grid-template-columns:1fr;}
+    .wrow .m,.wrow .s,.wrow .st{border:none;text-align:left}
+  }
+  @media print{
+    body{background:#fff;color:#111}
+    .verdict,.kpi,.card,.lane,.d1,.tbl{break-inside:avoid}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+  /* light-theme elevation */
+  .kpi,.seg,.card,.lane,.ec,.olc,.val,.chartbox,.tbl,.watch,.srcbox,.tension,.d1,.cstat{
+    box-shadow:0 1px 3px rgba(20,40,80,.05),0 1px 2px rgba(20,40,80,.04)}
+  .tbl{box-shadow:0 2px 8px rgba(20,40,80,.06)}
+  .kpi .v{letter-spacing:-.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">投资跟踪看板 · AI 光互联赛道</div>
+    <h1>Soitec<span class="tick">SOI.PA</span></h1>
+    <div class="sub">硅基绝缘体(SOI)基板全球龙头 · 困境反转 + AI 光子学第二曲线</div>
+    <div class="asof">
+      <span><b>研究方</b> 井唐投资中心</span>
+      <span><b>整理日期</b> 2026年6月</span>
+      <span><b>数据口径</b> 各公司最新可比财报与公开市场信息</span>
+      <span><b>性质</b> 内部研究参考</span>
+    </div>
+  </header>
+
+  <div class="verdict">
+    <div class="lab">一句话总判断</div>
+    <p>Soitec 是一家真实、技术有壁垒、刚从谷底反弹、并踩中 AI 光子学主线的公司——它不是骗局，但股价已把“光子学未来很美好”<b>提前透支了相当一部分</b>。<span class="warn">所谓“涨10倍”是叙事价格，不是分析价格：需要近乎完美的执行 + 持续的 AI 资本开支景气，概率不高且路径脆弱。</span></p>
+  </div>
+
+  <!-- final recommendation -->
+  <div class="reco">
+    <div class="lab">最终投资建议</div>
+    <div class="stance">
+      <span class="badge">小仓位 · 投机性参与</span>
+      <span class="one">看好这条主线可以小注参与，但不作为重仓或稳健配置。</span>
+    </div>
+    <div class="scale">
+      <div class="seg5">回避</div>
+      <div class="seg5 on b">小仓位投机</div>
+      <div class="seg5">标配</div>
+      <div class="seg5">重仓</div>
+      <div class="seg5">all in</div>
+    </div>
+    <div class="slabel">建议立场区间 · 当前落在“小仓位投机”一档</div>
+    <p><b>结论：</b>如果你认可 AI 光互联是长期主线，Soitec 值得用<b>能承受归零、不超过组合 3%–5%</b> 的资金小仓位参与，赌它的光子学第二曲线起飞。但它<b>仍在亏损、旧业务拖累、估值已不便宜、今年已涨约 7 倍</b>，确定性低于中游的 Coherent / Lumentum。<b>务必放弃“稳赚10倍”的预期</b>——把它当成一个高风险、需长期跟踪、严守纪律的成长性赌注，而非确定性机会。若你只想要确定性，这条链里有比它更稳的选择。</p>
+  </div>
+
+  <!-- discipline (moved up) -->
+  <section style="margin-top:30px">
+    <div class="shead"><span class="snum">02</span><h2>操盘纪律</h2><span class="note">高波动股真正的胜负手</span></div>
+    <div class="disc">
+      <div class="d1"><div class="t">仓位</div><p>仅用组合中能承受大幅回撤、短期不需动用的一小部分（单一高波动个股通常建议 ≤ 3%–5%）。不重仓、不加杠杆、不用买房/养老的钱。</p></div>
+      <div class="d1"><div class="t">建仓方式</div><p>分批建仓而非一次性追高——它日内常上下十几个百分点。</p></div>
+      <div class="d1"><div class="t">止损纪律</div><p>事先设好能接受的最大亏损比例并严格执行；不因“有人说会涨10倍”就在历史高位 all in。</p></div>
+    </div>
+  </section>
+
+  <!-- KPI -->
+  <section>
+    <div class="shead"><span class="snum">03</span><h2>关键数字 · FY2026</h2><span class="note">截至 2026/03/31 财年</span></div>
+    <div class="kpis" id="kpis"></div>
+  </section>
+
+  <!-- business segments -->
+  <section>
+    <div class="shead"><span class="snum">04</span><h2>公司在卖什么 · 三块业务</h2>
+      <span class="note">命运随业务分化：一块在萎缩，一块在起飞</span></div>
+    <div class="segs">
+      <div class="seg old">
+        <div class="tag">旧业务 · 拖累</div>
+        <h3>RF-SOI（射频）</h3>
+        <div class="role">进手机 · 过去的现金牛</div>
+        <p>成熟、周期性、增长有限。是过去两年拖垮业绩的元凶，目前仍在客户去库存。</p>
+      </div>
+      <div class="seg mid">
+        <div class="tag">周期 · 待复苏</div>
+        <h3>汽车与工业</h3>
+        <div class="role">FD-SOI / Auto-SOI</div>
+        <p>中期看电动车与雷达放量，但当前同样处在去库存阶段，尚未成为增长引擎。</p>
+      </div>
+      <div class="seg eng">
+        <div class="tag">第二曲线 · 核心</div>
+        <h3>Photonics-SOI（光子学）</h3>
+        <div class="role">AI 数据中心光互联关键材料</div>
+        <p>整个投资故事的核心。用于光模块、CPO 共封装光学，是唯一的高增长引擎，FY26 已破 $1亿。</p>
+      </div>
+    </div>
+    <div class="tension"><b>核心张力：</b>一边是正在萎缩的旧业务（手机/工业），一边是高速起飞的新业务（AI 光子学）。市场买的是——<b>第二条曲线能否盖过第一条。</b></div>
+  </section>
+
+  <!-- earnings read -->
+  <section>
+    <div class="shead"><span class="snum">05</span><h2>最新财报怎么读 · FY2026</h2>
+      <span class="note">本轮上涨的催化，但好坏参半</span></div>
+    <div class="ern">
+      <div class="ec pos"><div class="ico">✓</div><div>
+        <h4>现金流大幅超预期</h4>
+        <p>自由现金流转正至 €6300万（≈ $7180万），而市场预期仅约 €600万——10倍级超预期，股价当天跳涨超 14%，创 2023年8月以来新高。净债务/EBITDA 仅 0.4倍，资产负债表稳健。</p></div></div>
+      <div class="ec neg"><div class="ico">!</div><div>
+        <h4>但盈利质量在恶化</h4>
+        <p>毛利率从 32.1% 大跌到 16.3%（工厂产能利用率低），全年仍净亏损。这正是 ROE −15.20%、每股亏损的来源。</p></div></div>
+      <div class="ec pos"><div class="ico">✓</div><div>
+        <h4>CPO 是真实进展</h4>
+        <p>公司首次明确确认共封装光学（CPO）量产资格认证进展，被分析师称为“管理层首次明确的 CPO 确认”，长期想象空间打开。</p></div></div>
+      <div class="ec neg"><div class="ico">!</div><div>
+        <h4>FY27 利润会先难看</h4>
+        <p>管理层自承 FY27 盈利受工厂低负荷、汇率、补贴减少拖累；Q1’27 营收仅预计同比 +15%，是低基数上的温和恢复，而非爆发。</p></div></div>
+    </div>
+  </section>
+
+  <!-- outlook -->
+  <section>
+    <div class="shead"><span class="snum">06</span><h2>行业前景 · 正反两面</h2></div>
+    <div class="ol">
+      <div class="olc up">
+        <div class="h">▲ 正面 · 结构性长周期需求</div>
+        <ul>
+          <li>AI 数据中心光互联是真实、结构性、长周期的需求。</li>
+          <li>算力越堆越大，电信号传输的功耗与距离瓶颈越来越严重，光互联（硅光、CPO）被普遍视为必经之路。</li>
+          <li>有投行测算 Soitec 光子学业务 2025–2030 年复合增速可能达 41%。</li>
+        </ul>
+      </div>
+      <div class="olc dn">
+        <div class="h">▼ 风险 · 三条需警惕</div>
+        <ul>
+          <li>它不是纯 AI 公司——大头仍是周期性手机/工业，财报会被持续拖累。</li>
+          <li>作为上游材料商，在 AI 价值链里分到的利润远不如设计公司和系统厂。</li>
+          <li>这是周期性半导体股，AI 资本开支一旦见顶或库存反转，杀估值会非常快。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- price trend -->
+  <section>
+    <div class="shead"><span class="snum">07</span><h2>股价走势 · 这轮疯涨的全貌</h2>
+      <span class="note">月度收盘价示意（EUR）· 关键节点已标注</span></div>
+    <div class="chartbox">
+      <svg class="chart-svg" viewBox="0 0 1000 320" preserveAspectRatio="xMidYMid meet" id="pxchart"></svg>
+      <div class="clegend">
+        <div class="it"><span class="mk" style="background:#1f6fd6"></span>月度收盘价（示意）</div>
+        <div class="it"><span class="mk" style="background:#b5841a"></span>关键事件节点</div>
+        <div class="it"><span class="mk" style="background:#1f9d57"></span>当前价</div>
+      </div>
+      <div class="crow">
+        <div class="cstat"><div class="cl">历史高点 (2021/11)</div><div class="cv">约 €273</div></div>
+        <div class="cstat"><div class="cl">今年低点 (2026/02)</div><div class="cv neu">约 €24.5</div></div>
+        <div class="cstat"><div class="cl">反弹高点 (2026)</div><div class="cv up">约 €174</div></div>
+        <div class="cstat"><div class="cl">当前价 (2026/06)</div><div class="cv up">约 €113</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- valuation -->
+  <section>
+    <div class="shead"><span class="snum">08</span><h2>估值与股价位置</h2>
+      <span class="note">最该冷静的部分</span></div>
+    <div class="val">
+      <div class="vline">
+        <div class="lab">今年已涨幅度</div>
+        <div class="vbar"><div class="fill" style="width:100%;background:linear-gradient(90deg,#46b3a3,#6cc28a)">+600% · 52周低点 €22.6 → 高点 €173.7（约7倍）</div></div>
+      </div>
+      <div class="vline">
+        <div class="lab">分析师目标价</div>
+        <div class="vbar"><div class="fill" style="width:48%;background:linear-gradient(90deg,#e0b15a,#d8a657)">€36–66 · 多数“持有”，且低于现价</div></div>
+      </div>
+      <div class="vline">
+        <div class="lab">当前股价</div>
+        <div class="vbar"><div class="fill" style="width:70%;background:linear-gradient(90deg,#5b9bd5,#7ab4e0)">约 €110 · 站在历史高位区</div></div>
+      </div>
+      <div class="vnote">你被推荐时，这只股票今年已从谷底涨了约 <b>7 倍</b>，最容易赚的那一波可能已经涨完。从现价再涨 10 倍意味着市值要冲到约 <b>€380亿（≈ $433亿）</b>——没有任何主流投行给出接近这个量级的预测。<b>“10倍”是叙事价格，不是分析价格。</b></div>
+    </div>
+  </section>
+
+  <!-- comparison -->
+  <section>
+    <div class="shead"><span class="snum">09</span><h2>同赛道横向对比</h2>
+      <span class="note">同属 AI 光互联链，但站位不同 · 高亮行为你的标的</span></div>
+    <table class="tbl">
+      <thead><tr>
+        <th>公司</th><th>产业链位置</th><th>最新营收</th><th>盈利状况</th><th>市值</th><th>今年股价</th><th>AI暴露 / 关键绑定</th>
+      </tr></thead>
+      <tbody id="comp"></tbody>
+    </table>
+  </section>
+
+  <!-- takeaways -->
+  <section>
+    <div class="shead"><span class="snum">10</span><h2>这张表的五个要点</h2></div>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <!-- decision -->
+  <section>
+    <div class="shead"><span class="snum">11</span><h2>落到决策 · 三种上车方式</h2>
+      <span class="note">看好这条主线 ≠ Soitec 是最优解</span></div>
+    <div class="lanes">
+      <div class="lane a">
+        <div class="who">要确定性最高</div>
+        <div class="pick">Coherent / Lumentum</div>
+        <p>中游激光器/光器件，已盈利、英伟达直接背书、纯 AI 暴露。代价：估值已高、且为美股。</p>
+      </div>
+      <div class="lane b">
+        <div class="who">要弹性最猛</div>
+        <div class="pick">中际旭创</div>
+        <p>下游组装龙头，增长最快、绑定谷歌/英伟达。代价：90% 海外营收 + 光芯片卡脖子 + 估值最贵。</p>
+      </div>
+      <div class="lane c">
+        <div class="who">你的标的</div>
+        <div class="pick">Soitec</div>
+        <p>最上游、基数最低、困境反转。若光子学真起飞，从低基数弹起空间更大；但仍亏损、旧业务拖累，兑现不确定性最高。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- watchlist -->
+  <section>
+    <div class="shead"><span class="snum">12</span><h2>观察清单 · 后续从哪看、看什么</h2>
+      <span class="note">点状态可切换 健康 / 恶化</span></div>
+    <div class="watch" id="watch"></div>
+    <div class="wlhint">规则：全部健康 → 故事成立；任何一条恶化（尤其光子学增速放缓、毛利率不修复、AI 资本开支见顶）→ 减仓信号。状态仅本地切换，刷新不保存。</div>
+    <div class="srcbox">
+      <div class="srctitle">数据从哪里看（按可靠度排序）</div>
+      <div class="srcgrid">
+        <div class="src"><b>① 公司官方</b><span>Soitec 投资者关系页 soitec.com → Investors，每季财报、PPT、电话会全文。最权威，但更新最慢（每季一次）。</span></div>
+        <div class="src"><b>② 财经数据站</b><span>Yahoo Finance / Google Finance / stockanalysis.com 搜 SOI.PA：看实时股价、市值、营收/利润趋势图。日更。</span></div>
+        <div class="src"><b>③ 券商研报</b><span>摩根士丹利、Bernstein 等对光子学营收、CPO 的拆解；通常在财报后 1–2 天出，看目标价与评级变化。</span></div>
+        <div class="src"><b>④ 行业景气</b><span>英伟达/谷歌/微软等云厂商季度财报里的“资本开支(capex)”指引——这是整条链的总开关，比 Soitec 单家更早预警。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    本看板由井唐投资中心基于公开信息整理，所含观点与建议仅供内部研究与决策参考，不构成对任何个人的持牌投资顾问意见。AI 光互联赛道整体处于高位、高情绪、强 beta 状态，任何一家公司都不适合用承受不起亏损的资金重仓参与。数字为整理时点快照，非实时行情；如需实时更新需另接行情数据源。投资决策与风险由本人自行承担。
+  </footer>
+
+</div>
+
+<script>
+const DATA = {
+  kpis:[
+    {k:"FY26 营收",v:"€5.92亿",d:"≈ $6.75亿 · 同比 −30%",cls:"down"},
+    {k:"盈利状况",v:"净亏损 €2.22亿",d:"≈ −$2.53亿 · 毛利率 16.3%",cls:"down"},
+    {k:"自由现金流",v:"+€6300万",d:"≈ +$7180万 · 预期仅约 €600万",cls:"up"},
+    {k:"今年股价",v:"+600%",d:"现价约 €113（≈ $129）",cls:"up"},
+  ],
+  comp:[
+    {you:true,co:"Soitec",sub:"SOI.PA · 你的标的",pos:"最上游 · SOI 基板材料",
+      rev:"€5.92亿 (≈$6.75亿)",revp:{t:"同比 −30%",c:"r"},prof:"净亏损",profp:{t:"毛利率 16.3%",c:"r"},
+      cap:"€38亿 ≈ $43亿",px:{t:"+600%",c:"g"},ai:"部分（光子学仅占小头）"},
+    {co:"Coherent",sub:"COHR",pos:"中游 · 激光器/光器件",
+      rev:"$18.1亿",revp:{t:"同比 +21%",c:"g"},prof:"已盈利",profp:{t:"EPS +55%",c:"g"},
+      cap:"$694亿",px:{t:"一年超 +300%",c:"g"},ai:"高（数通占75%）· 英伟达 $20亿入股"},
+    {co:"Lumentum",sub:"LITE",pos:"中游 · 激光器(EML龙头)",
+      rev:"$6.7亿/季",revp:{t:"同比 +65%",c:"g"},prof:"已盈利",profp:{t:"EPS 近4倍",c:"g"},
+      cap:"$660亿",px:{t:"+105%",c:"g"},ai:"极高 · 英伟达多年战略协议"},
+    {co:"中际旭创",sub:"300308",pos:"中下游 · 光模块组装龙头",
+      rev:"¥382亿 (≈$53亿)",revp:{t:"同比 +60%",c:"g"},prof:"净利 ¥108亿",profp:{t:"毛利率 42.6%",c:"g"},
+      cap:"¥6000亿 ≈ $845亿",px:{t:"四年 38倍",c:"g"},ai:"极高（90%营收海外AI）· 谷歌/英伟达核心供应商"},
+  ],
+  cards:[
+    {i:"01",h:"唯一还在亏损、营收下滑的",p:"其余三家全是营收高增长 + 已盈利。Soitec 的故事是“困境反转 + 第二曲线”，而非“已在兑现的高增长”。"},
+    {i:"02",h:"越往下游，AI 兑现越彻底",p:"Lumentum 单季营收 +65%、中际旭创单季净利已超上一全年。Soitec 仍在“订单刚开始变成收入”的更早期——弹性更大、确定性更低。"},
+    {i:"03",h:"中下游有英伟达直接背书",p:"英伟达入股 Coherent、签约 Lumentum；中际旭创是谷歌/英伟达核心供应商。Soitec 的卡位确定性目前不如它们清晰。"},
+    {i:"04",h:"不便宜，但也不是最疯的",p:"最贵的是下游组装厂（中际旭创四年38倍、Lumentum 前瞻 PE 超120倍）。整条链都在高估值高情绪区，没有“便宜的安全选项”。"},
+    {i:"05",h:"共享同一个头顶风险",p:"AI 资本开支见顶是整条链的“总开关”。光模块是周期行业，产能扩张终将带来价格战；下游还有光芯片国产化率不足20% 的卡脖子风险。",span:true},
+  ],
+  watch:[
+    {m:"光子学营收",ws:"Photonics-SOI",
+      look:"季度营收金额与同比增速、占总营收比重是否快速提升（FY26 已破 $1亿）。",
+      where:"财报新闻稿“Edge & Cloud AI / Photonics”段落 · 电话会 Q&A"},
+    {m:"CPO 进度",ws:"共封装光学",
+      look:"是否从“资格认证(qualification)”推进到“规模量产/上量”。措辞从 sampling→ramp 是关键信号。",
+      where:"财报电话会管理层发言 · 摩根士丹利/Bernstein 研报"},
+    {m:"RF-SOI / 手机",ws:"旧业务",
+      look:"去库存是否见底、营收环比是否回升，不再是拖累项。",
+      where:"财报“Mobile Communications”分部数据"},
+    {m:"毛利率",ws:"盈利质量",
+      look:"是否随工厂产能利用率(fab loading)回升而修复。当前 16.3% 过低，看能否回到 25%+。",
+      where:"财报损益表 gross margin 行 · 季度对比"},
+    {m:"自由现金流",ws:"现金安全垫",
+      look:"是否持续为正。FY26 的 €6300万 是本轮反弹催化，转负即警报。",
+      where:"财报现金流量表 / FCF 指标"},
+    {m:"AI 资本开支",ws:"行业总开关",
+      look:"云厂商 capex 指引是否持续上调。见顶 → 从上游到下游一起杀估值。",
+      where:"英伟达/谷歌/微软/Meta 季度财报 capex 指引"},
+  ]
+};
+
+// KPI
+document.getElementById('kpis').innerHTML = DATA.kpis.map(x=>
+  `<div class="kpi"><div class="k">${x.k}</div><div class="v ${x.cls}">${x.v}</div><div class="d">${x.d}</div></div>`).join('');
+
+// comparison
+document.getElementById('comp').innerHTML = DATA.comp.map(r=>{
+  const pill=p=>p?`<span class="pill ${p.c}">${p.t}</span>`:'';
+  return `<tr class="${r.you?'you':''}">
+    <td class="co">${r.co}<small>${r.sub}</small></td>
+    <td>${r.pos}</td>
+    <td>${r.rev}<br>${pill(r.revp)}</td>
+    <td>${r.prof}<br>${pill(r.profp)}</td>
+    <td class="mono">${r.cap}</td>
+    <td>${pill(r.px)}</td>
+    <td>${r.ai}</td>
+  </tr>`;}).join('');
+
+// cards
+document.getElementById('cards').innerHTML = DATA.cards.map(c=>
+  `<div class="card ${c.span?'span2':''}"><div class="ci">${c.i}</div><h3>${c.h}</h3><p>${c.p}</p></div>`).join('');
+
+// price chart
+(function(){
+  // 真实价格锚点（月度收盘示意，EUR）
+  const pts=[
+    {t:"21/11",v:273,ev:"历史高点"},
+    {t:"22/06",v:150},
+    {t:"23/01",v:185},
+    {t:"23/08",v:150},
+    {t:"24/06",v:110},
+    {t:"25/01",v:90},
+    {t:"25/08",v:55},
+    {t:"26/02",v:24.5,ev:"今年低点"},
+    {t:"26/03",v:63,ev:"AI光子学行情启动"},
+    {t:"26/05",v:160,ev:"财报现金流超预期"},
+    {t:"26/06",v:113,ev:"当前"},
+  ];
+  const W=1000,H=320,pl=46,pr=20,pt=24,pb=44;
+  const iw=W-pl-pr, ih=H-pt-pb;
+  const max=290,min=0;
+  const x=i=>pl+iw*i/(pts.length-1);
+  const y=v=>pt+ih*(1-(v-min)/(max-min));
+  let g='';
+  // grid + y labels
+  [0,75,150,225,290].forEach(v=>{
+    const yy=y(v);
+    g+=`<line x1="${pl}" y1="${yy}" x2="${W-pr}" y2="${yy}" stroke="#dde4ee" stroke-width="1"/>`;
+    g+=`<text x="${pl-8}" y="${yy+4}" fill="#647688" font-size="11" text-anchor="end">€${v}</text>`;
+  });
+  // area + line
+  let dline=pts.map((p,i)=>`${i?'L':'M'}${x(i).toFixed(1)},${y(p.v).toFixed(1)}`).join(' ');
+  let darea=dline+` L${x(pts.length-1).toFixed(1)},${y(0)} L${x(0).toFixed(1)},${y(0)} Z`;
+  g+=`<defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1f6fd6" stop-opacity=".16"/>
+      <stop offset="100%" stop-color="#1f6fd6" stop-opacity="0"/></linearGradient></defs>`;
+  g+=`<path d="${darea}" fill="url(#ag)"/>`;
+  g+=`<path d="${dline}" fill="none" stroke="#1f6fd6" stroke-width="2.6" stroke-linejoin="round"/>`;
+  // x labels
+  pts.forEach((p,i)=>{ if(i%2===0||i===pts.length-1)
+    g+=`<text x="${x(i)}" y="${H-16}" fill="#647688" font-size="11" text-anchor="middle">${p.t}</text>`;});
+  // event markers
+  pts.forEach((p,i)=>{
+    if(!p.ev)return;
+    const cur=p.ev==="当前";
+    const col=cur?"#1f9d57":(p.v<40?"#1f6fd6":"#b5841a");
+    g+=`<circle cx="${x(i)}" cy="${y(p.v)}" r="${cur?6:4.5}" fill="${col}" stroke="#ffffff" stroke-width="2"/>`;
+    const up=p.v>140; const ty=up?y(p.v)-14:y(p.v)+22;
+    const anchor=i>pts.length-3?"end":(i<2?"start":"middle");
+    g+=`<text x="${x(i)}" y="${ty}" fill="${col}" font-size="11.5" font-weight="700" text-anchor="${anchor}">${p.ev} €${p.v}</text>`;
+  });
+  document.getElementById('pxchart').innerHTML=g;
+})();
+
+document.getElementById('watch').innerHTML = DATA.watch.map((w,i)=>
+  `<div class="wrow">
+     <div class="m">${w.m}<span class="ws">${w.ws}</span></div>
+     <div class="s"><span class="look">看什么：${w.look}</span><span class="where">从哪看：<b>${w.where}</b></span></div>
+     <div class="st"><span class="dot" data-i="${i}"><i></i><span class="lbl">待定</span></span></div>
+   </div>`).join('');
+
+const states=['待定','健康','恶化'], cls=['','ok','bad'];
+document.querySelectorAll('.dot').forEach(d=>{
+  let s=0;
+  d.addEventListener('click',()=>{
+    s=(s+1)%3; d.className='dot '+cls[s];
+    d.querySelector('.lbl').textContent=states[s];
+  });
+});
+</script>
+</body>
+</html>
